@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Store</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, td, th {
+            padding: 5px;
+            border: 1px solid grey;
+        }
+    </style>
+</head>
+
+<body>
+
+<div>
+    <a th:href="@{'/product-stocks'}">Product Stock</a>&nbsp;
+    <hr>
+</div>
+
+<h2>
+    Products:
+</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Product Id</th>
+        <th>Available</th>
+        <th>Options</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="productStock: ${productSocks}">
+        <td th:text="${productStock.productId}">Product Id</td>
+        <td th:text="${productStock.available}">Available</td>
+        <td>
+            <a th:href="@{'/product-stocks/' + ${productStock.id} + '/delete'}"
+               onclick="return confirm('Are you sure you want to delete?')">
+                Delete
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
