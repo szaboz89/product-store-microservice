@@ -33,4 +33,33 @@ public class HomeController {
         });
         return REDIRECT_PRODUCT_STOCKS;
     }
+
+    @GetMapping("/product-stocks/{id}/complete-demand")
+    public String completedDemand(@PathVariable Long id) {
+        productStockService.findById(id).ifPresent(productStock -> {
+            log.info("Complete demand for productStock: {}", productStock);
+            if (productStock.getRequiredAmount() != null) {
+                if (productStock.getAvailable() != null) {
+                    productStock.setAvailable(productStock.getAvailable() + productStock.getRequiredAmount());
+                } else if (productStock.getRequiredAmount() != null) {
+                    productStock.setAvailable(productStock.getRequiredAmount());
+                }
+            }
+            productStock.setRequiredAmount(null);
+            productStockService.save(productStock);
+        });
+        return REDIRECT_PRODUCT_STOCKS;
+    }
+
+    @GetMapping("/product-stocks/{id}/decrease-available")
+    public String decreaseAvailableCount(@PathVariable Long id) {
+        productStockService.findById(id).ifPresent(productStock -> {
+            log.info("Decrease available count for productStock: {}", productStock);
+            if (productStock.getAvailable() != null && productStock.getAvailable() > 0) {
+                productStock.setAvailable(productStock.getAvailable() - 1);
+                productStockService.save(productStock);
+            }
+        });
+        return REDIRECT_PRODUCT_STOCKS;
+    }
 }

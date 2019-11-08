@@ -31,6 +31,7 @@
     <tr>
         <th>Product Id</th>
         <th>Available</th>
+        <th>Required Amount</th>
         <th>Options</th>
     </tr>
     </thead>
@@ -38,10 +39,18 @@
     <tr th:each="productStock: ${productSocks}">
         <td th:text="${productStock.productId}">Product Id</td>
         <td th:text="${productStock.available}">Available</td>
+        <td th:text="${productStock.requiredAmount}">Available</td>
         <td>
             <a th:href="@{'/product-stocks/' + ${productStock.id} + '/delete'}"
                onclick="return confirm('Are you sure you want to delete?')">
                 Delete
+            </a>&nbsp;
+            <a th:href="@{'/product-stocks/' + ${productStock.id} + '/complete-demand'}"
+               onclick="return confirm('Are you sure you want to complete demand and increase available count?')">
+                Complete demand
+            </a>&nbsp;
+            <a th:href="@{'/product-stocks/' + ${productStock.id} + '/decrease-available'}">
+                Decrease
             </a>
         </td>
     </tr>

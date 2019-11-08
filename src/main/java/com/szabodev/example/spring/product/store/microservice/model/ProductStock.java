@@ -23,4 +23,6 @@ public class ProductStock implements Serializable {
     private Long productId;
 
     private Integer available;
+
+    private Integer requiredAmount;
 }

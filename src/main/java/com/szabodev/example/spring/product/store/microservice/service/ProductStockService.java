@@ -16,4 +16,6 @@ public interface ProductStockService {
     void deleteById(Long id);
 
     List<ProductStockDTO> init(int multiplier);
+
+    ProductStockDTO save(ProductStockDTO productStock);
 }

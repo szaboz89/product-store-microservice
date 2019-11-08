@@ -62,4 +62,10 @@ public class ProductStockServiceImpl implements ProductStockService {
         }
         return findAll();
     }
+
+    @Override
+    public ProductStockDTO save(ProductStockDTO productStock) {
+        ProductStock saved = productStockRepository.save(productStockMapper.toEntity(productStock));
+        return productStockMapper.toDTO(saved);
+    }
 }
