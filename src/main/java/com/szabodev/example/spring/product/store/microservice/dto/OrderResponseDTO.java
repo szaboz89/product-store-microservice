@@ -9,15 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductStockDTO {
+public class OrderResponseDTO {
 
-    private Long id;
-
-    private Long productId;
-
-    private Integer available;
-
-    private Integer requiredAmount;
-
-    private Integer version;
+    private String status;
 }

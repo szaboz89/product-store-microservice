@@ -10,6 +10,7 @@ import org.springframework.jms.support.converter.MessageType;
 public class JmsConfig {
 
     public static final String PRODUCT_DEMAND_QUEUE = "product-demand-queue";
+    public static final String ORDER_REQUEST_QUEUE = "order-request-queue";
 
     @Bean
     public MessageConverter messageConverter() {

@@ -25,4 +25,7 @@ public class ProductStock implements Serializable {
     private Integer available;
 
     private Integer requiredAmount;
+
+    @Version
+    private Integer version;
 }
