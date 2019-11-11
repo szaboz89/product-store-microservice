@@ -41,17 +41,24 @@
         <td th:text="${productStock.available}">Available</td>
         <td th:text="${productStock.requiredAmount}">Available</td>
         <td>
-            <a th:href="@{'/product-stocks/' + ${productStock.id} + '/delete'}"
-               onclick="return confirm('Are you sure you want to delete?')">
-                Delete
+            <a th:href="@{'/product-stocks/' + ${productStock.id} + '/decrease-available'}">
+                Decrease
+            </a>&nbsp;
+            <a th:href="@{'/product-stocks/' + ${productStock.id} + '/increase-available'}">
+                Increase
             </a>&nbsp;
             <a th:href="@{'/product-stocks/' + ${productStock.id} + '/complete-demand'}"
                onclick="return confirm('Are you sure you want to complete demand and increase available count?')">
                 Complete demand
             </a>&nbsp;
-            <a th:href="@{'/product-stocks/' + ${productStock.id} + '/decrease-available'}">
-                Decrease
-            </a>
+            <a th:href="@{'/product-stocks/' + ${productStock.id} + '/delete-demand'}"
+               onclick="return confirm('Are you sure you want to delete required amount?')">
+                Delete demand
+            </a>&nbsp;
+            <a th:href="@{'/product-stocks/' + ${productStock.id} + '/delete'}"
+               onclick="return confirm('Are you sure you want to delete stock details?')">
+                Delete stock
+            </a>&nbsp;
         </td>
     </tr>
     </tbody>

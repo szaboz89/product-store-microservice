@@ -3,6 +3,7 @@ package com.szabodev.example.spring.product.store.microservice.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.szabodev.example.spring.product.store.microservice.config.JmsConfig;
+import com.szabodev.example.spring.product.store.microservice.dto.DeletedOrderDTO;
 import com.szabodev.example.spring.product.store.microservice.dto.OrderRequestDTO;
 import com.szabodev.example.spring.product.store.microservice.dto.OrderResponseDTO;
 import com.szabodev.example.spring.product.store.microservice.dto.ProductDemandDTO;
@@ -76,5 +77,29 @@ public class MessageListener {
         OrderResponseDTO replyMessage = OrderResponseDTO.builder().status(status.get()).build();
         jmsTemplate.convertAndSend(message.getJMSReplyTo(), replyMessage);
         log.info("Reply message sent: {}", message);
+    }
+
+    @JmsListener(destination = JmsConfig.ORDER_DELETED_QUEUE)
+    public void deletedOrderListener(Message message) throws JMSException {
+        log.info("Handling deleted order info. Message: {}", message);
+        TextMessage textMessage = (TextMessage) message;
+        try {
+            DeletedOrderDTO deletedOrder = objectMapper.readValue(textMessage.getText(), DeletedOrderDTO.class);
+            Optional<ProductStock> productOpt = productStockRepository.findByProductId(deletedOrder.getProductId());
+            if (productOpt.isPresent()) {
+                Integer available = productOpt.get().getAvailable();
+                productOpt.get().setAvailable(available != null ? available + deletedOrder.getAmount() : deletedOrder.getAmount());
+                productStockRepository.save(productOpt.get());
+            } else {
+                ProductStock newStock = ProductStock.builder()
+                        .productId(deletedOrder.getProductId())
+                        .available(deletedOrder.getAmount())
+                        .build();
+                log.info("Product stock not found, saving new: {}", newStock);
+                productStockRepository.save(newStock);
+            }
+        } catch (JsonProcessingException e) {
+            System.out.println("MessageListener - Cannot convert to object: " + textMessage.getText());
+        }
     }
 }

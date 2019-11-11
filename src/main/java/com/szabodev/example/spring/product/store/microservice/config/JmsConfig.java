@@ -11,6 +11,7 @@ public class JmsConfig {
 
     public static final String PRODUCT_DEMAND_QUEUE = "product-demand-queue";
     public static final String ORDER_REQUEST_QUEUE = "order-request-queue";
+    public static final String ORDER_DELETED_QUEUE = "order-deleted-queue";
 
     @Bean
     public MessageConverter messageConverter() {

@@ -51,6 +51,16 @@ public class HomeController {
         return REDIRECT_PRODUCT_STOCKS;
     }
 
+    @GetMapping("/product-stocks/{id}/delete-demand")
+    public String deleteDemand(@PathVariable Long id) {
+        productStockService.findById(id).ifPresent(productStock -> {
+            log.info("Delete demand for productStock: {}", productStock);
+            productStock.setRequiredAmount(null);
+            productStockService.save(productStock);
+        });
+        return REDIRECT_PRODUCT_STOCKS;
+    }
+
     @GetMapping("/product-stocks/{id}/decrease-available")
     public String decreaseAvailableCount(@PathVariable Long id) {
         productStockService.findById(id).ifPresent(productStock -> {
@@ -59,6 +69,20 @@ public class HomeController {
                 productStock.setAvailable(productStock.getAvailable() - 1);
                 productStockService.save(productStock);
             }
+        });
+        return REDIRECT_PRODUCT_STOCKS;
+    }
+
+    @GetMapping("/product-stocks/{id}/increase-available")
+    public String increaseAvailableCount(@PathVariable Long id) {
+        productStockService.findById(id).ifPresent(productStock -> {
+            log.info("Increase available count for productStock: {}", productStock);
+            if (productStock.getAvailable() != null) {
+                productStock.setAvailable(productStock.getAvailable() + 1);
+            } else {
+                productStock.setAvailable(1);
+            }
+            productStockService.save(productStock);
         });
         return REDIRECT_PRODUCT_STOCKS;
     }
